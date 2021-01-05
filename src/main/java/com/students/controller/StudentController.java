@@ -19,26 +19,26 @@ public class StudentController extends RestTemplate{
 	
 	Logger log = LoggerFactory.getLogger(StudentController.class);
 	
-	//login
+	//login page
 	@GetMapping("/")
 	public ModelAndView login() {
 		ModelAndView mav = new ModelAndView("login");
 		
 		return mav;
 	}
-	//register page
-	@GetMapping("/register")
+	//addStudent page
+	@GetMapping("/addStudent")
 	public ModelAndView register() {
-		ModelAndView mav = new ModelAndView("register");
+		ModelAndView mav = new ModelAndView("addStudent");
 		return mav;
 	}
 	
-	//register
-	@PostMapping("/register")
+	//add a student
+	@PostMapping("/addStudent")
 	public ModelAndView addStudent(@ModelAttribute StudentDTO studentDto) {
-		ModelAndView mav = new ModelAndView("register");
+		ModelAndView mav = new ModelAndView("addStudent");
 		
-		String url = "http://localhost:8081/addStudents";
+		String url = "http://localhost:8082/students";
 		
 		studentDto = webRestTemplate.postForObject(url, studentDto, StudentDTO.class);
 		
@@ -48,4 +48,21 @@ public class StudentController extends RestTemplate{
 		
 		return mav;
 	}
+	
+	//login
+	@PostMapping("login")
+	public ModelAndView loginStudent(@ModelAttribute StudentDTO studentDto){
+		ModelAndView mav = new ModelAndview("login");
+		
+		String url = "http://localhost:8082/students";
+		
+		mav.addObject("studentDto", studentDto);
+		
+		log.info("studentDto " + studentDto);
+		
+		return mav;
+	}
+	
+	//update student
+	@Get
 }
